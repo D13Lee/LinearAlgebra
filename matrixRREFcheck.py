@@ -13,45 +13,7 @@
 # ex  0 1   constructs 0 1 0
 #     0 0 1            0 0 1
 
-def main():
-    matrix = userConstructMatrix()
-    RREF = isRREF(matrix)
-    REF = False
-    if not RREF:
-        REF = isREF(matrix)
-    compressFloats(matrix)
-    printMatrix(matrix)
-    if not RREF:
-        print("is" + (" REF but not RREF" if REF else " not REF or RREF"))
-    else:
-        print("is REF and RREF")
 
-def userConstructMatrix():
-    rows = int(input("Enter number of rows: "))
-    matrix = []
-    for i in range(rows):
-        userInput = input("Enter row " + str(i + 1) + ": ").split()
-        
-        row = []
-        for entry in userInput:
-            row.append(float(entry))
-        matrix.append(row)
-
-    fillZeroes(matrix)
-    return matrix
-
-def fillZeroes(matrix):
-    length = findLongestRow(matrix)
-    for row in matrix:
-        for i in range(length - len(row)):
-            row.append(0.0)
-
-def findLongestRow(matrix):
-    n = 0
-    for row in matrix:
-        if len(row) > n:
-            n = len(row)
-    return n
 
 def isRREF(matrix):
     if condition1(matrix):
@@ -63,30 +25,23 @@ def isRREF(matrix):
 def isREF(matrix):
     if condition1(matrix):
         return condition2(matrix)
+    return False
 
-def compressFloats(matrix):
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            n = matrix[i][j]
-            if int(n) == n:
-                matrix[i][j] = int(n)
     
 
-def printMatrix(matrix):
-    for row in matrix:
-        print(row)
+
 
 #check if all nonzero rows are above every zero row
 def condition1(matrix):
     rows = []
-    for row in matrix:
-        rows.append(isZeroRow(row))
+    for i in range(len(matrix)):
+        rows.append(isZeroRow(matrix[i]))
 
     zeroPassed = False
     for state in rows:
         if state and not zeroPassed:
             zeroPassed = True
-        if state and zeroPassed:
+        elif state and zeroPassed:
             return False
     return True
 
@@ -163,10 +118,12 @@ def isZeroRow(row):
 
 
 A = []
-a1 = [1, 0, 0]
-a2 = [0, 1, 0]
-a3 = [0, 0, 1]
-A = [a1, a2, a3]
+a1 = [0, 2, 1, 0, 0]
+a2 = [0, 0, -1, 2, 0]
+a3 = [0, 0, 0, 4, 0]
+a4 = [0, 0, 0, 0, 2]
+a5 = [0, 0, 0, 0, 0]
+A = [a1, a2, a3, a4, a5]
 
 B = []
 b1 = [0, 0, 0, 0]
@@ -180,8 +137,3 @@ c1 = [0, 0, 0]
 c2 = [0, 0, 0]
 c3 = [0, 0, 0]
 C = [c1, c2, c3]
-
-#main(A)
-#main(B)
-#main(C)
-main()
